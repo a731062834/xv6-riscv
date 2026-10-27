@@ -1,0 +1,17 @@
+#!/bin/sh
+# 拒绝推送到上游官方仓库 mit-pdos/xv6-riscv
+# $1 = remote 名，$2 = 实际推送 URL
+remote_name="$1"
+remote_url="$2"
+lower=$(printf '%s' "$remote_url" | tr '[:upper:]' '[:lower:]')
+
+case "$lower" in
+  *mit-pdos/xv6-riscv*)
+    echo "" >&2
+    echo "❌ 已阻止：目标仓库是上游官方 mit-pdos/xv6-riscv" >&2
+    echo "   remote '$remote_name' -> $remote_url" >&2
+    echo "   你的 fork 是 origin，请改用：git push origin riscv" >&2
+    exit 1
+    ;;
+esac
+exit 0
